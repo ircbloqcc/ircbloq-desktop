@@ -33,6 +33,7 @@
     "url": "git+ssh://git@github.com/ircbloqcc/ircbloq-desktop.git"
   },
   "dependencies": {
+	"autoprefixer": "^9.8.6",
     "ircbloq-link": "latest",
     "ircbloq-resource": "latest",
     "source-map-support": "^0.5.19"
