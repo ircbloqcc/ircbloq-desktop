@@ -77,7 +77,7 @@
     "nets": "^3.2.0",
     "node-localstorage": "^2.1.6",
     "ircbloq-gui": "github:ircbloqcc/ircbloq-gui#ircbloq-desktop-v2.2.0",
-    "ircbloq-l10n": "^3.10.20210626105402",
+    "ircbloq-l10n": "3.10.20210630023630",
     "os-locale": "^5.0.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",

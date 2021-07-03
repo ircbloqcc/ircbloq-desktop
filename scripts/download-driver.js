@@ -4,8 +4,8 @@ const path = require('path');
 const os = require('os');
 const fs = require('fs');
 
-const user = 'ircbloqcc';
-const repo = 'ircbloq-driver';
+const user = 'openblockcc';//dont change
+const repo = 'openblock-driver';
 const outputdir = path.join(__dirname, '../drivers');
 const leaveZipped = false;
 
