@@ -68,7 +68,7 @@ const loadFilters = {
             ...saveFilters.SB3.extensions,
             ...saveFilters.SB2.extensions,
             ...saveFilters.SB.extensions,
-            ...saveFilters.OB.extensions
+            ...saveFilters.IB.extensions
         ]
     },
     AllSounds: {
