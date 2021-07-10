@@ -23,9 +23,9 @@ const saveFilters = {
         name: 'Scratch 3 Project',
         extensions: ['sb3']
     },
-    OB: {
+    IB: {
         name: 'IrcBloq Project',
-        extensions: ['ob']
+        extensions: ['ib']
     },
     Sprite2: {
         name: 'Scratch 2 Sprite',

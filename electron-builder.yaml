@@ -8,7 +8,7 @@ productName: "IrcBloq"
 publish: # empty provider list = don't publish
 
 fileAssociations:
-  ext: ob
+  ext: ib
   name: Ircbloq project file
   role: Editor
   icon: buildResources/IrcBloqFile.ico
