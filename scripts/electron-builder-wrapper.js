@@ -114,7 +114,7 @@ const calculateTargets = function (wrapperConfig) {
         //     platform: 'win32'
         // },
         windowsDirectDownload: {
-            name: 'nsis',
+            name: 'nsis:ia32',   //default is nsis is 64bit, nsis:ia32 is for 32bit application
             platform: 'win32'
         }
     };
