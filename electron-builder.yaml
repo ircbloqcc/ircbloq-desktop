@@ -4,7 +4,7 @@ directories:
 extraResources: ["tools", "external-resources", 'firmwares', "statics", "drivers"]
 
 appId: ircbloq.cc.ircbloq-desktop
-productName: "IrcBloq"
+productName: "ircBloqV4"
 publish: # empty provider list = don't publish
 
 fileAssociations:
@@ -25,12 +25,12 @@ fileAssociations:
 #   hardenedRuntime: true
 #   icon: buildResources/IrcBloqDesktop.icns
 #   provisioningProfile: embedded.provisionprofile
-#   artifactName: "IrcBloq ${version}.${ext}"
+#   artifactName: "ircBloqV4 ${version}.${ext}"
 #   target:
 #     - dmg
 #     - mas
 # dmg:
-#   title: "IrcBloq ${version}"
+#   title: "ircBloqV4 ${version}"
 # mas:
 #   category: public.app-category.education
 #   entitlements: buildResources/entitlements.mas.plist
@@ -49,10 +49,10 @@ win:
 #   identityName: "IrcbloqTeam.IrcbloqDesktop
 #   publisherDisplayName: "Ircbloq Team"
 #   publisher: "CN=2EC43DF1-469A-4119-9AB9-568A0A1FF65F"
-#   artifactName: "Ircbloq ${version}.${ext}"
+#   artifactName: "ircBloqV4 ${version}.${ext}"
 nsis:
   oneClick: false # allow user to choose per-user or per-machine
   allowToChangeInstallationDirectory: true
   include: buildResources/installer.nsh
 #   license: LICENSE
-  artifactName: "IrcBloq ${version} Setup.${ext}"
+  artifactName: "ircBloqV4 ${version} Setup.${ext}"
