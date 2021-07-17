@@ -97,14 +97,14 @@ const runBuilder = function (wrapperConfig, target) {
 const calculateTargets = function (wrapperConfig) {
     const masDevProfile = 'mas-dev.provisionprofile';
     const availableTargets = {
-        macAppStore: {
-            name: 'mas',
-            platform: 'darwin'
-        },
-        macAppStoreDev: {
-            name: 'mas-dev',
-            platform: 'darwin'
-        },
+        //macAppStore: {
+        //    name: 'mas',
+        //    platform: 'darwin'
+        //},
+        //macAppStoreDev: {
+        //    name: 'mas-dev',
+        ///    platform: 'darwin'
+        //},
         macDirectDownload: {
             name: 'dmg',
             platform: 'darwin'
@@ -131,17 +131,17 @@ const calculateTargets = function (wrapperConfig) {
         // Seems like a bug in electron-builder...
         // Running the 'mas' build first means that its output is available while we wait for 'dmg' notarization.
         // Add macAppStoreDev here to test a MAS-like build locally. You'll need a Mac Developer provisioning profile.
-        if (fs.existsSync(masDevProfile)) {
-            targets.push(availableTargets.macAppStoreDev);
-        } else {
-            console.log(`skipping target "${availableTargets.macAppStoreDev.name}": ${masDevProfile} missing`);
-        }
-        if (wrapperConfig.doSign) {
-            targets.push(availableTargets.macAppStore);
-        } else {
+       // if (fs.existsSync(masDevProfile)) {
+        //    targets.push(availableTargets.macAppStoreDev);
+        //} else {
+        //    console.log(`skipping target "${availableTargets.macAppStoreDev.name}": ${masDevProfile} missing`);
+       // }
+       // if (wrapperConfig.doSign) {
+        //    targets.push(availableTargets.macAppStore);
+        //} else {
             // electron-builder doesn't seem to support this configuration even if mac.type is "development"
-            console.log(`skipping target "${availableTargets.macAppStore.name}" because code-signing is disabled`);
-        }
+        //    console.log(`skipping target "${availableTargets.macAppStore.name}" because code-signing is disabled`);
+        //}
         targets.push(availableTargets.macDirectDownload);
         break;
     default:

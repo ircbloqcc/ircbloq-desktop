@@ -3,7 +3,7 @@
   "productName": "ircBloqV4",
   "description": "Ircbloq as a self-contained desktop application",
   "author": "iRobochakra",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "license": "MIT",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
@@ -75,7 +75,7 @@
     "monaco-editor-webpack-plugin": "^1.7.0",
     "nets": "^3.2.0",
     "node-localstorage": "^2.1.6",
-    "ircbloq-gui": "github:ircbloqcc/ircbloq-gui#ircbloq-desktop-v4.0.2",
+    "ircbloq-gui": "github:ircbloqcc/ircbloq-gui#ircbloq-desktop-v4.0.3",
     "ircbloq-l10n": "latest",
     "os-locale": "^5.0.0",
     "react": "^16.14.0",
