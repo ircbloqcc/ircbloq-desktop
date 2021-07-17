@@ -1,5 +1,30 @@
 # Change Log IRCBLOQV4
-##V4.0.1
+## v4.0.3
+
+- **New feature**
+    1. Add Kit filter option to device selection.
+    2. Add the option to cancel the device selection.
+    3. When loading a project containing unknown devices and plug-ins, the error details will be reported.
+    4. Update the device picture according to the new picture standard.
+    5. Automatically obtain the control board pin list in external extensions.
+    6. Add slider type blocks.
+    7. Optimized the devil bird svg image.
+
+- **Fix bug**
+    1. The serial port send button is collapsed in small window mode.
+    2. Modify the default installation path of the desktop version of windows to the root directory of C drive instead of the deep directory of user data.
+    3. If there is an unsupported device id in the external device list, the device model will be empty.
+    4. Because the vm building block adds the device type in front of the optype, the display variable cannot be translated normally.
+    5. Esp8266 digital pin cannot select GPIO16.
+    6. Check the checkbox so that the variable will be displayed in the stage area, and it will still exist after switching the device.
+    7. Arduino ceil function name error.
+    8. The microbit attitude option is not translated.
+    9. Microbit uses multiple while true statements that are not supported.
+    10. When using the scroll wheel to move the toolbox, the completely displayed blocks beyond the boundary are blocked again.
+    11. Color picker function is not available.
+    12. The disconnection error alert flashes after switching the mode.
+    13. When using a third-party device, the alert uses the mother board instead of the picture of the third-party device board.
+##V4.0.2
 - **New feature
     1. IMPORVED NEW UI, Supports SCARTCH 3 Based Extensions.
     2. Added Blynk IOT, ADAFRUIT IO, LOCALSERVER, THINGSPEAK SERVER FOR NODEMCU boards
@@ -103,7 +128,7 @@
     2. Change the ui of upload button.
     3. Change the description of some boards.
     4. Add a 1.05 scale to fix the problem of fuzzy font.
-    5. Change project file extension from .sb3 to .ob.
+    5. Change project file extension from .sb3 to .ib.
 
 - **Fix bug**
     1. Microbit generator error.
