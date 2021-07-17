@@ -3,7 +3,7 @@
   "productName": "ircBloqV4",
   "description": "Ircbloq as a self-contained desktop application",
   "author": "iRobochakra",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "license": "MIT",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
