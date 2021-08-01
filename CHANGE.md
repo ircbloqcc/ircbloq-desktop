@@ -1,4 +1,22 @@
 # Change Log IRCBLOQV4
+## v4.0.4
+
+- **New feature**
+
+    1. Optimize the font and line break display effect of the serial terminal.
+    2. Display the loaded extensions first in the extensions library.
+    . Modify the esp8266 upload rate to 921600 to speed up the upload speed.
+
+- **Fix bug**
+
+    1. Fixed the bug loading error by double click project from saved location.
+    2. When loading a project with a extension, an error will be reported and cannot be loaded.
+    3. The input box of the variable increase block is parsed incorrectly when other blocks or variables are placed.
+    4. In the double-numbered character, the movement blocks in the toolbox area will not automatically change to the coordinates of the character's current position.
+    5. Fix the problem that esp32 and esp8266 cannot start after clicking the reset button when connecting to openblock due to the lack of serial port to enable dtr rts flow control.
+    6. After connecting and disconnecting the device once in upload mode, no matter what mode is connected to the device again, it will not be able to establish communication with the connection firmata.
+    7. ESP32 and ESP8266 will get stuck for a long time between compiling and uploading.
+
 ## v4.0.3
 
 - **New feature**
@@ -25,6 +43,7 @@
     12. Color picker function is not available.
     13. The disconnection error alert flashes after switching the mode.
     14. When using a third-party device, the alert uses the mother board instead of the picture of the third-party device board.
+
 ##V4.0.2
 - **New feature
     1. IMPORVED NEW UI, Supports SCARTCH 3 Based Extensions.
