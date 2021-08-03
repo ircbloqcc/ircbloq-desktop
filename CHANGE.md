@@ -5,17 +5,19 @@
 
     1. Optimize the font and line break display effect of the serial terminal.
     2. Display the loaded extensions first in the extensions library.
-    . Modify the esp8266 upload rate to 921600 to speed up the upload speed.
+    3. Modify the esp8266 upload rate to 921600 to speed up the upload speed.
 
 - **Fix bug**
 
-    1. Fixed the bug loading error by double click project from saved location.
-    2. When loading a project with a extension, an error will be reported and cannot be loaded.
-    3. The input box of the variable increase block is parsed incorrectly when other blocks or variables are placed.
-    4. In the double-numbered character, the movement blocks in the toolbox area will not automatically change to the coordinates of the character's current position.
-    5. Fix the problem that esp32 and esp8266 cannot start after clicking the reset button when connecting to openblock due to the lack of serial port to enable dtr rts flow control.
-    6. After connecting and disconnecting the device once in upload mode, no matter what mode is connected to the device again, it will not be able to establish communication with the connection firmata.
-    7. ESP32 and ESP8266 will get stuck for a long time between compiling and uploading.
+    1. When you double-click to open the project file with the selected device, an error will occur in loading.
+    2. After add comment for device extension block and save the project file. If try to load the project after restart the software, there is another comment window appear which cannot able to delete.
+    3. Fixed the bug loading error by double click project from saved location.
+    4. When loading a project with a extension, an error will be reported and cannot be loaded.
+    5. The input box of the variable increase block is parsed incorrectly when other blocks or variables are placed.
+    6. In the double-numbered character, the movement blocks in the toolbox area will not automatically change to the coordinates of the character's current position.
+    7. Fix the problem that esp32 and esp8266 cannot start after clicking the reset button when connecting to openblock due to the lack of serial port to enable dtr rts flow control.
+    8. After connecting and disconnecting the device once in upload mode, no matter what mode is connected to the device again, it will not be able to establish communication with the connection firmata.
+    9. ESP32 and ESP8266 will get stuck for a long time between compiling and uploading.
 
 ## v4.0.3
 
