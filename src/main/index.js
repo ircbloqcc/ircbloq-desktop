@@ -30,6 +30,13 @@ let resourceServer;
 
 const nodeStorage = new JSONStorage(app.getPath('userData'));
 
+let locale = osLocale.sync();
+if (locale === 'zh-CN') {
+    locale = 'zh-cn';
+} else if (locale === 'zh-TW') {
+    locale = 'zh-tw';
+}
+
 // suppress deprecation warning; this will be the default in Electron 9
 app.allowRendererProcessReuse = true;
 
@@ -389,7 +396,7 @@ const createMainWindow = () => {
         nodeStorage.setItem('userId', userId);
         webContents.send('setUserId', userId);
 
-        resourceServer.checkUpdate()
+       resourceServer.checkUpdate(locale)
             .then(info => {
                 if (info) {
                     webContents.send('setUpdate', {phase: 'idle', version: info.version, describe: info.describe});
@@ -412,6 +419,7 @@ const createMainWindow = () => {
                 webContents.send('setUpdate',
                     {phase: 'error', message: err});
             });
+			webContents.send('setPlatform', process.platform);
     });
 
     ipcMain.on('reqeustUpgrade', () => {
@@ -482,12 +490,7 @@ app.on('ready', () => {
         });
     }
 
-    let locale = osLocale.sync();
-    if (locale === 'zh-CN') {
-        locale = 'zh-cn';
-    } else if (locale === 'zh-TW') {
-        locale = 'zh-tw';
-    }
+    
     formatMessage.setup({
         locale: locale,
         // eslint-disable-next-line global-require
