@@ -10,7 +10,7 @@ import GUI from 'ircbloq-gui/src/index';
 import VM from 'ircbloq-vm';
 
 import analytics, {initialAnalytics} from 'ircbloq-gui/src/lib/analytics';
-import MessageBoxType from 'openblock-gui/src/lib/message-box.js';
+import MessageBoxType from 'ircbloq-gui/src/lib/message-box.js';
 import AppStateHOC from 'ircbloq-gui/src/lib/app-state-hoc.jsx';
 import {
     LoadingStates,
