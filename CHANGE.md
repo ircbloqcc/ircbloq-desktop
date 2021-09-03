@@ -1,4 +1,26 @@
 # Change Log IRCBLOQV4
+### ircBloqV4 - V4.1.0
+
+**Bug Fixes**
+
+- Because shield in ircbloq-resource source code is misspelled as sheild, shield filter in GUI interface is null.
+- In VM, one more line of startheartbeat function call is written, and startheartbeat repeats reentry, resulting in real-time communication error.
+- Cannot edit input-box after the alert or confirm window pops up.
+- The device selection is not cleared after a new project is created.
+- The old device is not disconnected after a new project is created.
+- After using the shortcut key Ctrl + Z to modify blocks, the code on the right side is not updated.
+- HC05 Bluetooth Tx and Rx interchanged
+- add warp option for print in hc05 extension
+- Bug fixes in Buzzer
+- Fixed EOL for Print in Multi Serial Port
+
+**Added**
+- Added 8x8 Display Extension
+- Added MPU6050 Extension
+- Added SharpIR
+- Added ArduinoSourceCode insert
+- Added PCA9685- 16 Channel Servo Drive
+
 ## v4.0.4
 
 - **New feature**
