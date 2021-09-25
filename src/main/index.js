@@ -405,6 +405,7 @@ const createMainWindow = () => {
             .catch(err => {
                 console.warn(`Error while checking for update: ${err}`);
             });
+		webContents.send('setPlatform', process.platform);											  
     });
     ipcMain.on('reqeustCheckUpdate', () => {
         resourceServer.checkUpdate()
@@ -419,7 +420,6 @@ const createMainWindow = () => {
                 webContents.send('setUpdate',
                     {phase: 'error', message: err});
             });
-			webContents.send('setPlatform', process.platform);
     });
 
     ipcMain.on('reqeustUpgrade', () => {

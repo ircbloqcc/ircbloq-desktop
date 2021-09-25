@@ -3,7 +3,7 @@
   "productName": "ircBloqV4",
   "description": "Ircbloq as a self-contained desktop application",
   "author": "iRobochakra",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "license": "MIT",
   "scripts": {
 	"preinstall": "npx npm-force-resolutions",
@@ -80,7 +80,7 @@
     "nets": "^3.2.0",
     "node-localstorage": "^2.1.6",
     "npm-force-resolutions": "0.0.10",
-    "ircbloq-gui": "github:ircbloqcc/ircbloq-gui#ircbloq-desktop-v4.1.0",
+    "ircbloq-gui": "github:ircbloqcc/ircbloq-gui#ircbloq-desktop-v4.1.1",
     "ircbloq-l10n": "latest",
     "os-locale": "^5.0.0",
     "react": "^16.14.0",
