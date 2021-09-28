@@ -22,6 +22,11 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '14.x'
+      - name: Add token for private package access to .npmrc
+        run: echo "//npm.pkg.github.com/:_authToken=$ACME_CORP_TOKEN" > ~/.npmrc
+        env:
+            ACME_CORP_TOKEN: ${{ secrets.ACME_CORP_TOKEN }}
+
 
       - name: Npm Install
         run: npm install
