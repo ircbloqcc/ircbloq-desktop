@@ -28,7 +28,7 @@ jobs:
         run: git config --global url."https://${{ secrets.REPO_AUTH_TOKEN }}@github.com/".insteadOf ssh://git@github.com/
         
       - name: Npm Install
-        run: npm install
+        run: npm ci
 
       - name: Build Dist
         env:
@@ -48,14 +48,20 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
 
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '14.x'
-
+          
+      - name: github Token
+        run: git config --global url."https://${{ secrets.REPO_AUTH_TOKEN }}@github.com/".insteadOf ssh://git@github.com/
+        
       - name: Npm Install
-        run: npm install
+        run: npm ci
+
 
       - name: Build Dist
         env:
@@ -75,14 +81,20 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
 
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '14.x'
-
+          
+      - name: github Token
+        run: git config --global url."https://${{ secrets.REPO_AUTH_TOKEN }}@github.com/".insteadOf ssh://git@github.com/
+        
       - name: Npm Install
-        run: npm install
+        run: npm ci
+
 
       - name: Build Dist
         env:
