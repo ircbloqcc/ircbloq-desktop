@@ -15,6 +15,12 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
+      - name: node version
+        run : node --version
+      
+      - name: npm version
+        run : npm --version
+        
       - uses: actions/checkout@v2
 
       - name: Use Node.js
