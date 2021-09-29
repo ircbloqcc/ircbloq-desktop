@@ -16,12 +16,17 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
 
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '14.x'
-
+          
+      - name: github Token
+        run: git config --global url."https://${{ secrets.REPO_AUTH_TOKEN }}@github.com/".insteadOf ssh://git@github.com/
+        
       - name: Npm Install
         run: npm install
 
@@ -113,7 +118,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
         with:
           tag_name: ${{ steps.tag.outputs.tag }}
           release_name: ircBloqV4 Desktop ${{ steps.tag.outputs.tag }}
@@ -141,7 +146,7 @@ jobs:
       - name: Relase Windows x64 package
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./ircBloqV4Desktop-win-x64.zip
