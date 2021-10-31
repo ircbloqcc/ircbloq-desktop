@@ -1,9 +1,9 @@
-import {BrowserWindow, Menu, app, dialog, ipcMain, systemPreferences} from 'electron';
+import {shell, BrowserWindow, Menu, app, dialog, ipcMain, systemPreferences} from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
 import {URL} from 'url';
 import {promisify} from 'util';
-import {execFile, spawn} from 'child_process';
+import {execFile, spawn, execSync} from 'child_process';
 import os from 'os';
 
 import argv from './argv';
@@ -26,6 +26,7 @@ import osLocale from 'os-locale';
 import IrcBloqLink from 'ircbloq-link';
 import IrcbloqResourceServer from 'ircbloq-resource';
 
+import fetch from 'electron-fetch';
 let resourceServer;
 
 const nodeStorage = new JSONStorage(app.getPath('userData'));
@@ -407,6 +408,52 @@ const createMainWindow = () => {
             });
 		webContents.send('setPlatform', process.platform);											  
     });
+	
+	ipcMain.on('requestCheckMainUpdate', () => {
+
+		let data = '';
+		const request = fetch('https://api.github.com/repos/ircbloqcc/ircbloq-releases/releases/latest')
+		.then(res => res.json())
+		.then(json => {
+		 if(json.tag_name){
+			console.log('New Update: ', json.body);
+			const latest = json.tag_name.replace('V', '');
+			
+			if (latest > version) {
+				webContents.send('setUpdate', {phase: 'Mainidle',version: `V${latest}`, describe: json.body });
+			}
+			else {
+				 resourceServer.checkUpdate(locale)
+				 .then(info => {
+                 if (info) {
+                     webContents.send('setUpdate', {phase: 'idle', version: info.version, describe: info.describe});
+                 }
+				 else{
+				     webContents.send('setUpdate', {phase: 'Mainlatest'});
+				 }
+			 })
+            .catch(err => {
+                console.warn(`Error while checking for resource update: ${err}`);
+            });
+		 webContents.send('setPlatform', process.platform);
+			}
+			
+		 }
+		 else{
+				webContents.send('setUpdate', {phase: 'Mainlatest'});		 
+		 }
+		})
+	.catch( err => console.log(`Error while checking for update: ${err}`))
+	});
+	
+	ipcMain.on('requestMainUpgrade', () => {
+    
+	if ((os.platform() === 'win32')) {
+	  execSync('start https://ircbloqcc.github.io/wiki/download-software/');
+	} else if ((os.platform() === 'darwin')) {
+	  execSync('open https://ircbloqcc.github.io/wiki/download-software/');
+	}
+	});
     ipcMain.on('reqeustCheckUpdate', () => {
         resourceServer.checkUpdate()
             .then(info => {

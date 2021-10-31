@@ -52,6 +52,7 @@ const ScratchDesktopHOC = function (WrappedComponent) {
             bindAll(this, [
                 'handleClickCheckUpdate',
                 'handleClickUpgrade',
+                'handleClickMainUpgrade',
                 'handleProjectTelemetryEvent',
                 'handleSetTitleFromSave',
                 'handleStorageInit',
@@ -117,8 +118,14 @@ const ScratchDesktopHOC = function (WrappedComponent) {
         handleClickLogo () {
             ipcRenderer.send('open-about-window');
         }
+		handleClickCheckMainUpdate () {
+            ipcRenderer.send('requestCheckMainUpdate');
+        }
         handleClickCheckUpdate () {
             ipcRenderer.send('reqeustCheckUpdate');
+        }
+		handleClickMainUpgrade () {
+            ipcRenderer.send('requestMainUpgrade');
         }
         handleClickUpgrade () {
             ipcRenderer.send('reqeustUpgrade');
@@ -189,6 +196,8 @@ const ScratchDesktopHOC = function (WrappedComponent) {
                 showTelemetryModal={shouldShowTelemetryModal}
                 onClickLogo={this.handleClickLogo}
                 onClickCheckUpdate={this.handleClickCheckUpdate}
+                onClickCheckMainUpdate={this.handleClickCheckMainUpdate}
+                onClickMainUpgrade={this.handleClickMainUpgrade}
                 onClickUpgrade={this.handleClickUpgrade}
                 onClickInstallDriver={this.handleClickInstallDriver}
                 onClickClearCache={this.handleClickClearCache}
