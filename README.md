@@ -8,8 +8,8 @@
 	<a target="_blank" href="https://github.com/ircbloqcc/ircbloq-desktop/actions/workflows/Build and release.yml">
 	<img src="https://github.com/ircbloqcc/ircbloq-desktop/actions/workflows/Build and release.yml/badge.svg">
 	</a>
-	<a target="_blank" href="https://github.com/ircbloqcc/ircbloq-desktop/releases/tag/latest">
-    <img src="https://img.shields.io/badge/New Release-V4.1.1-blue.svg">
+	<a target="_blank" href="https://github.com/ircbloqcc/ircbloq-releases/releases/tag/latest">
+    <img src="https://img.shields.io/badge/New Release-V4.1.2-blue.svg">
     <img src="https://img.shields.io/github/downloads/ircbloqcc/ircbloq-releases/total">
     </a>
 
