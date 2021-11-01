@@ -397,16 +397,31 @@ const createMainWindow = () => {
         nodeStorage.setItem('userId', userId);
         webContents.send('setUserId', userId);
 
-       resourceServer.checkUpdate(locale)
-            .then(info => {
-                if (info) {
-                    webContents.send('setUpdate', {phase: 'idle', version: info.version, describe: info.describe});
-                }
-            })
+       const request = fetch('https://api.github.com/repos/ircbloqcc/ircbloq-releases/releases/latest')
+		.then(res => res.json())
+		.then(json => {
+		 if(json.tag_name){
+			console.log('New Update: ', json.body);
+			const latest = json.tag_name.replace('V', '');
+			
+			if (latest > version) {
+				webContents.send('setUpdate', {phase: 'Mainidle',version: `V${latest}`, describe: json.body });
+			}
+			else {
+				 resourceServer.checkUpdate(locale)
+				 .then(info => {
+                 if (info) {
+                     webContents.send('setUpdate', {phase: 'idle', version: info.version, describe: info.describe});
+                 }
+			 })
             .catch(err => {
-                console.warn(`Error while checking for update: ${err}`);
+                console.warn(`Error while checking for resource update: ${err}`);
             });
-		webContents.send('setPlatform', process.platform);											  
+		 webContents.send('setPlatform', process.platform);
+			}
+		 }
+		})
+	.catch( err => console.log(`Error while checking for update: ${err}`))										  
     });
 	
 	ipcMain.on('requestCheckMainUpdate', () => {
@@ -416,7 +431,7 @@ const createMainWindow = () => {
 		.then(res => res.json())
 		.then(json => {
 		 if(json.tag_name){
-			console.log('New Update: ', json.body);
+			//console.log('New Update: ', json.body);
 			const latest = json.tag_name.replace('V', '');
 			
 			if (latest > version) {
