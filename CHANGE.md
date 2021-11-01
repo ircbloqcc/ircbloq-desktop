@@ -1,5 +1,25 @@
 # Change Log IRCBLOQV4
-### ircBloqV4 - V4.1.1
+
+## V4.1.2
+
+- **New feature**
+
+    1. Added Main App Update Checking
+    2. Added Sounds for Blocks adding and Deletion 
+    3. Optimize the windows nsis installation script. Now the first installation path will be set to the root directory of the c drive, and the subsequent installation path will be automatically detected and modified to the installation directory selected during the first installation.
+    4. Add support for original scratch project files.
+    5. Add the eric to the sprite and custom library.
+
+- **Fix bug**
+
+    1. Switching the programming mode while the sprite is speaking will cause the interface to crash.
+    2. When loading a project file containing custom list variables, an error will be reported that the loading cannot be completed.
+    3. The parameter blocks of custom functions will be disabled when switching modes.
+    4. The serial port data of esp32 and microbit is not displayed in the terminal.
+    5. Correct the programming language icon of esp32 and NodeMCU.
+    6. Port not disconnecting While uploading Error caused.
+
+## V4.1.1
 
 **Bug Fixes**
 
@@ -20,7 +40,7 @@
 - Optimize server program, prepare data in advance to speed up service processing speed
 
 
-### ircBloqV4 - V4.1.0
+## V4.1.0
 
 **Bug Fixes**
 
@@ -42,7 +62,7 @@
 - Added ArduinoSourceCode insert
 - Added PCA9685- 16 Channel Servo Drive
 
-## v4.0.4
+## V4.0.4
 
 - **New feature**
 
@@ -62,7 +82,7 @@
     8. After connecting and disconnecting the device once in upload mode, no matter what mode is connected to the device again, it will not be able to establish communication with the connection firmata.
     9. ESP32 and ESP8266 will get stuck for a long time between compiling and uploading.
 
-## v4.0.3
+## V4.0.3
 
 - **New feature**
     1. Add Kit filter option to device selection.
