@@ -28,7 +28,7 @@ jobs:
         run: git config --global url."https://${{ secrets.REPO_AUTH_TOKEN }}@github.com/".insteadOf ssh://git@github.com/
         
       - name: Npm Install
-        run: npm ci
+        run: npm i
 
       - name: Build Dist
         env:
@@ -60,7 +60,7 @@ jobs:
         run: git config --global url."https://${{ secrets.REPO_AUTH_TOKEN }}@github.com/".insteadOf ssh://git@github.com/
         
       - name: Npm Install
-        run: npm ci
+        run: npm i
 
 
       - name: Build Dist
@@ -93,7 +93,7 @@ jobs:
         run: git config --global url."https://${{ secrets.REPO_AUTH_TOKEN }}@github.com/".insteadOf ssh://git@github.com/
         
       - name: Npm Install
-        run: npm ci
+        run: npm i
 
 
       - name: Build Dist
@@ -112,38 +112,40 @@ jobs:
           retention-days: 1
 
   create-release:
-    needs: [build-windows, build-windows32, build-mac]
+   needs: [build-windows, build-windows32, build-mac]
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - name: get-npm-version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@master
-
-      - name: Get tag
-        id: tag
-        uses: dawidd6/action-get-tag@v1
-
+      - name: Checkout public repository
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.REPO_AUTH_TOKEN }}
+          repository: ircbloqcc/ircbloq-link-releases
+          path: ircbloq-link-releases
+      - name: Get tag name from ref
+        shell: bash
+        run: echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
+        id: get_tag
+      - name: Create tag in public repository
+        run: |
+          cd ${{github.workspace}}/ircbloq-link-releases
+          git tag ${{ steps.get_tag.outputs.tag }}
+          git push --tags --porcelain
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ steps.tag.outputs.tag }}
-          release_name: ircBloqV4 Desktop ${{ steps.tag.outputs.tag }}
+          owner: ircbloqcc
+          repo: ircbloq-link-releases
+          tag: ${{ steps.get_tag.outputs.tag }}
+          name: Release ${{ steps.get_tag.outputs.tag }}
           body: |
-            - **New feature**
-              1. First Change
-              2. Second Change
-
-            - **Fix bug**
-              1. First Change
-              2. Second Change
+            Changes in this Release
+            - First Change
+            - Second Change
           draft: true
           prerelease: false
+          token:  ${{ secrets.REPO_AUTH_TOKEN }}
 
       - name: Download all build result
         uses: actions/download-artifact@v2
@@ -152,8 +154,8 @@ jobs:
       - name: Zip win x64 file
         uses: papeloto/action-zip@v1
         with:
-            files: ircBloqV4Desktop-win-x64.exe
-            dest: ircBloqV4Desktop-win-x64.zip
+          files: ircBloqV4Desktop-win-x64.exe
+          dest: ircBloqV4Desktop-win-x64.zip
 
       - name: Relase Windows x64 package
         uses: actions/upload-release-asset@v1
@@ -162,7 +164,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./ircBloqV4Desktop-win-x64.zip
-          asset_name: ircBloqV4Desktop-${{ steps.package-version.outputs.current-version }}-win-x64.zip
+          asset_name: ircBloqV4Desktop-${{ steps.get_tag.outputs.tag }}-win-x64.zip
           asset_content_type: application/zip
 
       # Windows x86 Release
@@ -172,14 +174,14 @@ jobs:
             files: ircBloqV4Desktop-win-x86.exe
             dest: ircBloqV4Desktop-win-x86.zip
 
-      - name: Relase Windows x64 package
+      - name: Relase Windows x86 package
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./ircBloqV4Desktop-win-x86.zip
-          asset_name: ircBloqV4Desktop-${{ steps.package-version.outputs.current-version }}-win-x86.zip
+          asset_name: ircBloqV4Desktop-${{ steps.get_tag.outputs.tag }}-win-x86.zip
           asset_content_type: application/zip
 
       # Mac Release
@@ -192,11 +194,11 @@ jobs:
       - name: Relase Mac package
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./ircBloqV4Desktop-mac.zip
-          asset_name: ircBloqV4Desktop-${{ steps.package-version.outputs.current-version }}-mac.zip
+          asset_name: ircBloqV4Desktop-${{ steps.get_tag.outputs.tag }}-mac.zip
           asset_content_type: application/zip
 
       # Checksum Release
@@ -205,9 +207,9 @@ jobs:
 
       - uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: checksums.txt
-          asset_name: ${{ steps.package-version.outputs.current-version }}-checksums-sha256.txt
+          asset_name: ${{ steps.get_tag.outputs.tag }}-checksums-sha256.txt
           asset_content_type: application/zip
