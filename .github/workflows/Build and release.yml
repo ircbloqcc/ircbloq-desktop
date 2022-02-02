@@ -112,7 +112,7 @@ jobs:
           retention-days: 1
 
   create-release:
-   needs: [build-windows, build-windows32, build-mac]
+    needs: [build-windows, build-windows32, build-mac]
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}
     runs-on: ubuntu-latest
     steps:
