@@ -40,10 +40,17 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          path: |
-			dist/ircBloqV4-Desktop_*.exe
-			dist/IrcBloqV4-Desktop_*.exe.blockmap
-			dist/latest.yml
+          path: dist/ircBloqV4-Desktop_*.exe
+      
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: dist/IrcBloqV4-Desktop_*.exe.blockmap
+          
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: dist/latest.yml
 		  
           retention-days: 1
 
@@ -77,10 +84,17 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          path: |
-			dist/ircBloqV4-Desktop_*.dmg
-			dist/ircBloqV4-Desktop_*.dmg.blockmap
-			dist/latest-mac.yml
+          path: dist/ircBloqV4-Desktop_*.dmg
+          
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: dist/ircBloqV4-Desktop_*.dmg.blockmap
+			
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: dist/latest-mac.yml
 			
           retention-days: 1
 
@@ -130,10 +144,24 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: |
-			./ircBloqV4-Desktop_*.exe
-			./ircBloqV4-Desktop_*.exe.blockmap
-			./latest.yml
+          asset_path: ./ircBloqV4-Desktop_*.exe
+		
+      - name: Release Windows blockmap
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./ircBloqV4-Desktop_*.exe.blockmap
+      
+      - name: Release Windows yml
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./latest.yml
+          asset_content_type: application/text
 			
       # Mac Release
       - name: Relase Mac package
@@ -142,11 +170,25 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path:  |
-			./ircBloqV4-Desktop_*.dmg
-			./ircBloqV4-Desktop_*.dmg.blockmap
-			./latest-mac.yml
+          asset_path: ./ircBloqV4-Desktop_*.dmg
           
+      - name: Relase Mac blockmap
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./ircBloqV4-Desktop_*.dmg.blockmap
+      
+      - name: Relase Mac yml
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./latest-mac.yml
+          asset_content_type: application/text
+		    
       # Checksum Release
       - name: Checksum
         run: sha256sum ircBloqV4-Desktop_*.exe >> checksums.txt
