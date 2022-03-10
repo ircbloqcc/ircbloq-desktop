@@ -143,6 +143,8 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./ircBloqV4-Desktop_*.exe
+          asset_name: ircBloqV4-Desktop_${{ steps.get_tag.outputs.tag }}.exe
+          asset_content_type: application/octet-stream
 
       - name: Release Windows blockmap
         uses: actions/upload-release-asset@v1
@@ -151,6 +153,8 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./ircBloqV4-Desktop_*.exe.blockmap
+          asset_name: ircBloqV4-Desktop_${{ steps.get_tag.outputs.tag }}.exe.blockmap
+          asset_content_type: application/octet-stream
 
       - name: Release Windows yml
         uses: actions/upload-release-asset@v1
@@ -159,7 +163,8 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./latest.yml
-          asset_content_type: application/text
+          asset_name: latest.yml
+          asset_content_type: application/x-yaml
 
       # Mac Release
       - name: Relase Mac package
@@ -169,6 +174,8 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./ircBloqV4-Desktop_*.dmg
+          asset_name: ircBloqV4-Desktop_${{ steps.get_tag.outputs.tag }}.dmg
+          asset_content_type: application/octet-stream
 
       - name: Relase Mac blockmap
         uses: actions/upload-release-asset@v1
@@ -177,6 +184,8 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./ircBloqV4-Desktop_*.dmg.blockmap
+          asset_name: ircBloqV4-Desktop_${{ steps.get_tag.outputs.tag }}.dmg.blockmap
+          asset_content_type: application/octet-stream
 
       - name: Relase Mac yml
         uses: actions/upload-release-asset@v1
@@ -185,7 +194,8 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./latest-mac.yml
-          asset_content_type: application/text
+          asset_name: latest-mac.yml
+          asset_content_type: application/x-yaml
 
       # Checksum Release
       - name: Checksum
@@ -198,4 +208,4 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: checksums.txt
           asset_name: ${{ steps.get_tag.outputs.tag }}-checksums-sha256.txt
-          asset_content_type: application/text
+          asset_content_type: text/plain
