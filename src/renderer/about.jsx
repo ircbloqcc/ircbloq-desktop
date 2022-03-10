@@ -5,7 +5,7 @@ import logo from '../icon/IrcBloqDesktop.svg';
 import styles from './about.css';
 
 const AboutElement = () => (
-     <div className={styles.aboutBox}>
+    <div className={styles.aboutBox}>
         <div><img
             alt={`${productName} icon`}
             src={logo}

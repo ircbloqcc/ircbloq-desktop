@@ -1,10 +1,13 @@
-import {ipcRenderer, remote} from 'electron';
+import {ipcRenderer} from 'electron';
+import {dialog} from '@electron/remote';
+import * as remote from '@electron/remote/renderer';
 import bindAll from 'lodash.bindall';
 import omit from 'lodash.omit';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
-import GUIComponent from 'openblock-gui/src/components/gui/gui.jsx';
+import GUIComponent from 'ircbloq-gui/src/components/gui/gui.jsx';
+import {FormattedMessage} from 'react-intl';
 
 import {
     LoadingStates,
@@ -14,21 +17,20 @@ import {
     requestNewProject,
     requestProjectUpload,
     setProjectId
-} from 'openblock-gui/src/reducers/project-state';
+} from 'ircbloq-gui/src/reducers/project-state';
 import {
     openLoadingProject,
     closeLoadingProject,
     openTelemetryModal,
     openUpdateModal
-} from 'openblock-gui/src/reducers/modals';
-import {setUpdate} from 'openblock-gui/src/reducers/update';
+} from 'ircbloq-gui/src/reducers/modals';
+import {setUpdate} from 'ircbloq-gui/src/reducers/update';
 
-import analytics, {initialAnalytics} from 'openblock-gui/src/lib/analytics';
-import MessageBoxType from 'openblock-gui/src/lib/message-box.js';
+import analytics, {initialAnalytics} from 'ircbloq-gui/src/lib/analytics';
+import MessageBoxType from 'ircbloq-gui/src/lib/message-box.js';
 
 import ElectronStorageHelper from '../common/ElectronStorageHelper';
 
-import showPrivacyPolicy from './showPrivacyPolicy';
 
 /**
  * Higher-order component to add desktop logic to the GUI.
@@ -52,17 +54,20 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
                 this.props.onHasInitialProject(hasInitialProject, this.props.loadingState);
                 if (!hasInitialProject) {
                     this.props.onLoadingCompleted();
+                    ipcRenderer.send('loading-completed');
                     return;
                 }
                 this.props.vm.loadProject(initialProjectData).then(
                     () => {
                         this.props.onLoadingCompleted();
+                        ipcRenderer.send('loading-completed');
                         this.props.onLoadedProject(this.props.loadingState, true);
                     },
                     e => {
                         this.props.onLoadingCompleted();
+                        ipcRenderer.send('loading-completed');
                         this.props.onLoadedProject(this.props.loadingState, false);
-                        remote.dialog.showMessageBox(remote.getCurrentWindow(), {
+                        dialog.showMessageBox(remote.getCurrentWindow(), {
                             type: 'error',
                             title: 'Failed to load project',
                             message: 'Invalid or corrupt project file.',
@@ -78,7 +83,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
                     }
                 );
             });
-            // this.platform = null;
+            ipcRenderer.send('set-locale', this.props.locale);
         }
         componentDidMount () {
             ipcRenderer.on('setTitleFromSave', this.handleSetTitleFromSave);
@@ -103,8 +108,11 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
         handleClickCheckUpdate () {
             ipcRenderer.send('reqeustCheckUpdate');
         }
-        handleClickUpgrade () {
-            ipcRenderer.send('reqeustUpgrade');
+        handleClickUpdate () {
+            ipcRenderer.send('reqeustUpdate');
+        }
+        handleAbortUpdate () {
+            ipcRenderer.send('abortUpdate');
         }
         handleClickClearCache () {
             ipcRenderer.send('clearCache');
@@ -129,7 +137,6 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
              * To avoid the electron bug: the input-box lose focus after call alert or confirm on windows platform.
              * https://github.com/electron/electron/issues/19977
             */
-            console.log('this.platform:', this.platform);
             if (this.platform === 'win32') {
                 let options;
                 if (type === MessageBoxType.confirm) {
@@ -144,7 +151,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
                         message: message
                     };
                 }
-                const result = remote.dialog.showMessageBoxSync(remote.getCurrentWindow(), options);
+                const result = dialog.showMessageBoxSync(remote.getCurrentWindow(), options);
                 if (result === 0) {
                     return true;
                 }
@@ -163,28 +170,32 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
                 canModifyCloudData={false}
                 canSave={false}
                 isScratchDesktop
-                onClickAbout={[
+                onClickAbout={[ // 新方法？似乎gui里已经有接口了
                     {
-                        title: 'About',
+                        title: (<FormattedMessage
+                            defaultMessage="About"
+                            description="Menu bar item for about"
+                            id="gui.desktopMenuBar.about"
+                        />),
                         onClick: () => this.handleClickAbout()
                     },
                     {
-                        title: 'Privacy Policy',
-                        onClick: () => showPrivacyPolicy()
-                    },
-                    {
-                        title: 'Data Settings',
+                        title: (<FormattedMessage
+                            defaultMessage="Data settings"
+                            description="Menu bar item for data settings"
+                            id="gui.menuBar.dataSettings"
+                        />),
                         onClick: () => this.props.onTelemetrySettingsClicked()
                     }
                 ]}
                 onClickLogo={this.handleClickLogo}
                 onClickCheckUpdate={this.handleClickCheckUpdate}
-                onClickUpgrade={this.handleClickUpgrade}
+                onClickUpdate={this.handleClickUpdate}
+                onAbortUpdate={this.handleAbortUpdate}
                 onClickInstallDriver={this.handleClickInstallDriver}
                 onClickClearCache={this.handleClickClearCache}
                 onProjectTelemetryEvent={this.handleProjectTelemetryEvent}
                 onShowMessageBox={this.handleShowMessageBox}
-                onShowPrivacyPolicy={showPrivacyPolicy}
                 onStorageInit={this.handleStorageInit}
                 onUpdateProjectTitle={this.handleUpdateProjectTitle}
 
@@ -196,6 +207,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
 
     ScratchDesktopGUIComponent.propTypes = {
         loadingState: PropTypes.oneOf(LoadingStates),
+        locale: PropTypes.string.isRequired,
         onFetchedInitialProjectData: PropTypes.func,
         onHasInitialProject: PropTypes.func,
         onLoadedProject: PropTypes.func,
@@ -211,6 +223,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
         const loadingState = state.scratchGui.projectState.loadingState;
         return {
             loadingState: loadingState,
+            locale: state.locales.locale,
             vm: state.scratchGui.vm
         };
     };
@@ -234,8 +247,8 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
             return dispatch(onLoadedProject(loadingState, canSaveToServer, loadSuccess));
         },
         onRequestNewProject: () => dispatch(requestNewProject(false)),
-        onSetUpdate: message => {
-            dispatch(setUpdate(message));
+        onSetUpdate: arg => {
+            dispatch(setUpdate(arg));
             dispatch(openUpdateModal());
         },
         onTelemetrySettingsClicked: () => dispatch(openTelemetryModal())

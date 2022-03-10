@@ -110,7 +110,7 @@ const makeConfig = function (defaultConfig, options) {
                     test: /\.css$/,
                     include: MONACO_DIR,
                     use: ['style-loader', 'css-loader']
-					 },
+                },
                 {
                     test: /node_modules[/\\](iconv-lite)[/\\].+/,
                     resolve: {
