@@ -52,7 +52,7 @@ jobs:
       - name: Archive production artifacts 2
         uses: actions/upload-artifact@v2
         with:
-          name: ircBloqV4-Desktop_${{ steps.get_tag.outputs.tag }}.exe
+          name: ircBloqV4-Desktop_${{ steps.get_tag.outputs.tag }}.exe.blockmap
           path: dist/IrcBloqV4-Desktop_V*.exe.blockmap
           retention-days: 1
           
