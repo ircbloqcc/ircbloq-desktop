@@ -40,17 +40,10 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          path: dist/ircBloqV4-Desktop_V*.exe
-      
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          path: dist/IrcBloqV4-Desktop_V*.exe.blockmap
-          
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          path: dist/latest.yml
+          path: |
+            dist/ircBloqV4-Desktop_V*.exe
+            dist/IrcBloqV4-Desktop_V*.exe.blockmap
+            dist/latest.yml
           retention-days: 1
 
   build-mac:
@@ -83,17 +76,10 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          path: dist/ircBloqV4-Desktop_V*.dmg
-
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          path: dist/ircBloqV4-Desktop_V*.dmg.blockmap
-
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          path: dist/latest-mac.yml
+          path: |
+            dist/ircBloqV4-Desktop_V*.dmg
+            dist/ircBloqV4-Desktop_V*.dmg.blockmap
+            dist/latest-mac.yml
           retention-days: 1
 
   create-release:
