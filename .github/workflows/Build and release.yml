@@ -84,12 +84,12 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           path: dist/ircBloqV4-Desktop_*.dmg
-          
+
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
           path: dist/ircBloqV4-Desktop_*.dmg.blockmap
-			
+
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
