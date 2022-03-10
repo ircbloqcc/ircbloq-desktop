@@ -143,7 +143,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./ircBloqV4-Desktop_*.exe
-		
+
       - name: Release Windows blockmap
         uses: actions/upload-release-asset@v1
         env:
@@ -151,7 +151,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./ircBloqV4-Desktop_*.exe.blockmap
-      
+
       - name: Release Windows yml
         uses: actions/upload-release-asset@v1
         env:
@@ -160,7 +160,7 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./latest.yml
           asset_content_type: application/text
-			
+
       # Mac Release
       - name: Relase Mac package
         uses: actions/upload-release-asset@v1
@@ -169,7 +169,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./ircBloqV4-Desktop_*.dmg
-          
+
       - name: Relase Mac blockmap
         uses: actions/upload-release-asset@v1
         env:
@@ -177,7 +177,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./ircBloqV4-Desktop_*.dmg.blockmap
-      
+
       - name: Relase Mac yml
         uses: actions/upload-release-asset@v1
         env:
@@ -186,7 +186,7 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./latest-mac.yml
           asset_content_type: application/text
-		    
+
       # Checksum Release
       - name: Checksum
         run: sha256sum ircBloqV4-Desktop_*.exe >> checksums.txt
