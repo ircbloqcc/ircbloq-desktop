@@ -1,5 +1,31 @@
 # Change Log IRCBLOQV4
 
+## V4.1.4
+
+- **New feature**
+
+    1. Application NEW auto-update feature is now supported.
+    2. Supports opening multiple apps at the same time.
+    3. Add software new loading interface.
+    4. Disable the edit button in the menu bar in upload mode.
+    5. Optimize and reduce the file size of external resources.
+    6. Merge the installation files for the 32-bit and 64-bit versions of the windows version.
+    7. When saving a project without a hardware device, convert it to a format supported by scratch3, so that scratch3 can open the pure scratch project created by openblock. (The save format is still .ob but scratch can be forced to open)
+
+- **Fix bug**
+
+    1. Fix the problem that the software needs to copy the cache when it is first started, resulting in no display for a long time. After the user clicks the startup icon multiple times, multiple programs operate on the cache at the same time, causing the cache file to be damaged. Then the program fails to start.
+    2. Fix wrong translation of button to turn on and off acceleration mode.
+    3. After selecting arduino uno and then mega2560, the pin menu is not updated.
+    4. The arduino pin interrupt function code is not right.
+    5. The python variable increase block will cut off the first digit after inputting more than two digits.
+    6. The generated code logic is incorrect when using a repeating block on a head block other than a hardware device startup event block.
+    7. The arduino's comparison block generates code that does not conform to the rules of the C language when the input is a pair of strings or a single character.
+    8. In micropython, since there is no global declaration for the custom variable in the function defined by the custom function or event, an error will be reported when using the custom variable block under these blocks.
+    9. Adjust the micropython code generation structure to prevent variables and functions from being called before the definition declaration.
+    10. Blocks generate code when they are dragged from the toolbar but not yet placed in the workspace.
+    11. Fix the arduino device sometimes wait for more than ten seconds to start uploading after the compilation is completed.
+
 ## V4.1.3
 
 - **New feature**
