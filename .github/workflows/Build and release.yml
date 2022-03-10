@@ -14,36 +14,37 @@ jobs:
   create-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout public repository
+        uses: actions/checkout@v2
         with:
-          persist-credentials: false
+          token: ${{ secrets.REPO_AUTH_TOKEN }}
+          repository: ircbloqcc/ircbloq-releases
+          path: ircbloq-releases
 
       - name: Get tag
         id: tag
         uses: dawidd6/action-get-tag@v1
 
+      - name: Create tag in public repository
+        run: |
+          cd ${{github.workspace}}/ircbloq-releases
+          git tag ${{ steps.get_tag.outputs.tag }}
+          git push --tags --porcelain
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ steps.tag.outputs.tag }}
-          release_name: ircBloqV4 - V${{ steps.tag.outputs.tag }}
+          owner: ircbloqcc
+          repo: ircbloq-releases
+          tag: ${{ steps.get_tag.outputs.tag }}
+          name: Release ${{ steps.get_tag.outputs.tag }}
           body: |
-            ## Change Log
-
-            - **New feature**
-
-                1. Feature 1.
-                2. Feature 2.
-
-            - **Fix bug**
-
-                1. Bug 1.
-                2. Bug 2.
+            Changes in this Release
+            - First Change
+            - Second Change
           draft: true
           prerelease: false
+          token:  ${{ secrets.REPO_AUTH_TOKEN }}
 
   build-windows:
     needs: create-release
