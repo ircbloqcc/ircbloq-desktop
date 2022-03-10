@@ -28,7 +28,7 @@ mac:
   hardenedRuntime: true
   icon: buildResources/IrcBloqDesktop.icns
   provisioningProfile: embedded.provisionprofile
-  artifactName: "ircBloqV4-Desktop_${version}.${ext}"
+  artifactName: "ircBloqV4-Desktop_V${version}.${ext}"
   target:
     - dmg
     # - mas
@@ -59,4 +59,4 @@ nsis:
   allowToChangeInstallationDirectory: true
   include: buildResources/installer.nsh
 #   license: LICENSE
-  artifactName: "ircBloqV4-Desktop_${version}.${ext}"
+  artifactName: "ircBloqV4-Desktop_V${version}.${ext}"

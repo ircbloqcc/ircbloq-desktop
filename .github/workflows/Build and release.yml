@@ -40,12 +40,12 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          path: dist/ircBloqV4-Desktop_*.exe
+          path: dist/ircBloqV4-Desktop_V*.exe
       
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          path: dist/IrcBloqV4-Desktop_*.exe.blockmap
+          path: dist/IrcBloqV4-Desktop_V*.exe.blockmap
           
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
@@ -83,12 +83,12 @@ jobs:
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          path: dist/ircBloqV4-Desktop_*.dmg
+          path: dist/ircBloqV4-Desktop_V*.dmg
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
-          path: dist/ircBloqV4-Desktop_*.dmg.blockmap
+          path: dist/ircBloqV4-Desktop_V*.dmg.blockmap
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
@@ -142,7 +142,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./ircBloqV4-Desktop_*.exe
+          asset_path: ./ircBloqV4-Desktop_${{ steps.get_tag.outputs.tag }}.exe
           asset_name: ircBloqV4-Desktop_${{ steps.get_tag.outputs.tag }}.exe
           asset_content_type: application/octet-stream
 
@@ -152,7 +152,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./ircBloqV4-Desktop_*.exe.blockmap
+          asset_path: ./ircBloqV4-Desktop_${{ steps.get_tag.outputs.tag }}.exe.blockmap
           asset_name: ircBloqV4-Desktop_${{ steps.get_tag.outputs.tag }}.exe.blockmap
           asset_content_type: application/octet-stream
 
@@ -173,7 +173,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./ircBloqV4-Desktop_*.dmg
+          asset_path: ./ircBloqV4-Desktop_${{ steps.get_tag.outputs.tag }}.dmg
           asset_name: ircBloqV4-Desktop_${{ steps.get_tag.outputs.tag }}.dmg
           asset_content_type: application/octet-stream
 
@@ -183,7 +183,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./ircBloqV4-Desktop_*.dmg.blockmap
+          asset_path: ./ircBloqV4-Desktop_${{ steps.get_tag.outputs.tag }}.dmg.blockmap
           asset_name: ircBloqV4-Desktop_${{ steps.get_tag.outputs.tag }}.dmg.blockmap
           asset_content_type: application/octet-stream
 
