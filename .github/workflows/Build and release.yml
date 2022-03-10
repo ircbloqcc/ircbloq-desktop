@@ -37,13 +37,25 @@ jobs:
           NODE_OPTIONS: --max_old_space_size=4096
         run: npm run dist
 
-      - name: Archive production artifacts
+      - name: Archive production artifacts 1
         uses: actions/upload-artifact@v2
         with:
-          path: |
-            dist/ircBloqV4-Desktop_V*.exe
-            dist/IrcBloqV4-Desktop_V*.exe.blockmap
-            dist/latest.yml
+          name: ircBloqV4-Desktop_${{ steps.get_tag.outputs.tag }}.exe
+          path: dist/ircBloqV4-Desktop_V*.exe
+          retention-days: 1
+      
+      - name: Archive production artifacts 2
+        uses: actions/upload-artifact@v2
+        with:
+          name: ircBloqV4-Desktop_${{ steps.get_tag.outputs.tag }}.exe
+          path: dist/IrcBloqV4-Desktop_V*.exe.blockmap
+          retention-days: 1
+          
+      - name: Archive production artifacts 3
+        uses: actions/upload-artifact@v2
+        with:
+          name: latest.yml
+          path: dist/latest.yml
           retention-days: 1
 
   build-mac:
@@ -73,15 +85,26 @@ jobs:
           CSC_IDENTITY_AUTO_DISCOVERY: false
         run: npm run dist
 
-      - name: Archive production artifacts
+      - name: Archive production artifacts 1
         uses: actions/upload-artifact@v2
         with:
-          path: |
-            dist/ircBloqV4-Desktop_V*.dmg
-            dist/ircBloqV4-Desktop_V*.dmg.blockmap
-            dist/latest-mac.yml
+          name: ircBloqV4-Desktop_${{ steps.get_tag.outputs.tag }}.dmg
+          path: dist/ircBloqV4-Desktop_V*.dmg
           retention-days: 1
 
+      - name: Archive production artifacts 2
+        uses: actions/upload-artifact@v2
+        with:
+          name: ircBloqV4-Desktop_${{ steps.get_tag.outputs.tag }}.dmg.blockmap
+          path: dist/ircBloqV4-Desktop_V*.dmg.blockmap
+          retention-days: 1
+
+      - name: Archive production artifacts 3
+        uses: actions/upload-artifact@v2
+        with:
+          name: latest-mac.yml
+          path: dist/latest-mac.yml
+          retention-days: 1
   create-release:
     needs: [build-windows, build-mac]
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}
