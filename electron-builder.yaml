@@ -5,7 +5,10 @@ extraResources: ["tools", "external-resources", 'firmwares', "statics", "drivers
 
 appId: ircbloq.cc.ircbloq-desktop
 productName: "ircBloqV4"
-publish: # empty provider list = don't publish
+publish: 
+  - provider: github
+    repo: ircbloq-releases
+    owner: ircbloqcc
 
 fileAssociations:
   ext: ib
