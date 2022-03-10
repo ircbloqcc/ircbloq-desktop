@@ -51,7 +51,6 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           path: dist/latest.yml
-		  
           retention-days: 1
 
   build-mac:
@@ -95,7 +94,6 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           path: dist/latest-mac.yml
-			
           retention-days: 1
 
   create-release:
