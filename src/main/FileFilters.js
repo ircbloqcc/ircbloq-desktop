@@ -23,9 +23,9 @@ const saveFilters = {
         name: 'Scratch 3 Project',
         extensions: ['sb3']
     },
-    OB: {
+    IB: {
         name: 'IrcBloq Project',
-        extensions: ['ob']
+        extensions: ['ib']
     },
     Sprite2: {
         name: 'Scratch 2 Sprite',
@@ -68,7 +68,7 @@ const loadFilters = {
             ...saveFilters.SB3.extensions,
             ...saveFilters.SB2.extensions,
             ...saveFilters.SB.extensions,
-            ...saveFilters.OB.extensions
+            ...saveFilters.IB.extensions
         ]
     },
     AllSounds: {
