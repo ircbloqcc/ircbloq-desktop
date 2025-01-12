@@ -30,6 +30,10 @@ app.allowRendererProcessReuse = true;
 // allow connect to localhost
 app.commandLine.appendSwitch('allow-insecure-localhost', 'true');
 
+// enable gpu and ignore gpu blacklist
+app.commandLine.hasSwitch('enable-gpu');
+app.commandLine.hasSwitch('ignore-gpu-blacklist');
+
 telemetry.appWasOpened();
 
 // const defaultSize = {width: 1096, height: 715}; // minimum
@@ -267,6 +271,28 @@ const createAboutWindow = () => {
     return window;
 };
 
+const createLicenseWindow = () => {
+    const window = createWindow({
+        width: _windows.main.width * 0.8,
+        height: _windows.main.height * 0.8,
+        parent: _windows.main,
+        search: 'route=license',
+        title: `${productName} License`
+    });
+    return window;
+};
+
+const createPrivacyWindow = () => {
+    const window = createWindow({
+        width: _windows.main.width * 0.8,
+        height: _windows.main.height * 0.8,
+        parent: _windows.main,
+        search: 'route=privacy',
+        title: `${productName} Privacy Policy`
+    });
+    return window;
+};
+
 const createLoadingWindow = () => {
     const window = createWindow({
         width: defaultSize.width,
@@ -298,7 +324,7 @@ const createMainWindow = () => {
     const window = createWindow({
         width: defaultSize.width,
         height: defaultSize.height,
-        title: `${productName}-${version}` // something like "Scratch-3.14"
+        title: `${productName} ${version}` // something like "Scratch 3.14"
     });
     const webContents = window.webContents;
 
@@ -506,58 +532,66 @@ app.on('ready', () => {
         });
     }
 
-    _windows.main = createMainWindow();
-    _windows.main.on('closed', () => {
-        delete _windows.main;
-    });
-    _windows.about = createAboutWindow();
-    _windows.about.on('close', event => {
-        event.preventDefault();
-        _windows.about.hide();
-    });
     ipcMain.on('clearCache', () => {
         desktopLink.clearCache();
     });
 
     ipcMain.on('installDriver', () => {
-        desktopLink.installDriver();
+        desktopLink.installDriver(() => {
+            dialog.showMessageBox(_windows.main, {
+                type: 'info',
+                message: `${formatMessage({
+                    id: 'index.systemRestartRequired',
+                    default: 'Installation is complete, please restart the system.',
+                    description: 'prompt for restart system'
+                })}`
+            });
+        });
     });
 
     // create a loading windows let user know the app is starting
     _windows.loading = createLoadingWindow();
     _windows.loading.once('show', () => {
-        desktopLink.updateCahce();
-        desktopLink.start()
-            .then(() => {
-                // after finsh load progress show main window and close loading window
-                _windows.main.show();
-                _windows.loading.close();
-                delete _windows.loading;
-            })
-            .catch(async e => {
-            // TODO: report error via telemetry
-                await dialog.showMessageBox(_windows.loading, {
-                    type: 'error',
-                    title: formatMessage({
-                        id: 'index.initialResourcesFailedTitle',
-                        default: 'Failed to initialize resources',
-                        description: 'Title for initialize resources failed'
-                    }),
-                    message: `${formatMessage({
-                        id: 'index.initializeResourcesFailed',
-                        default: 'Initialize resources failed',
-                        description: 'prompt for initialize resources failed'
-                    })}`,
-                    detail: e
-                });
+        desktopLink.start();
 
-                app.exit();
-            });
+        _windows.main = createMainWindow();
+        _windows.main.on('closed', () => {
+            delete _windows.main;
+        });
+
+        _windows.about = createAboutWindow();
+        _windows.about.on('close', event => {
+            event.preventDefault();
+            _windows.about.hide();
+        });
+        _windows.license = createLicenseWindow();
+        _windows.license.on('close', event => {
+            event.preventDefault();
+            _windows.license.hide();
+        });
+        _windows.privacy = createPrivacyWindow();
+        _windows.privacy.on('close', event => {
+            event.preventDefault();
+            _windows.privacy.hide();
+        });
+
+        // after finsh load progress show main window and close loading window
+        _windows.main.show();
+        _windows.loading.close();
+        delete _windows.loading;
     });
 });
 
 ipcMain.on('open-about-window', () => {
     _windows.about.show();
+});
+
+ipcMain.on('open-license-window', () => {
+    _windows.license.show();
+});
+
+ipcMain.on('open-privacy-policy-window', () => {
+    _windows.privacy.show();
 });
 
 ipcMain.on('set-locale', (event, arg) => {
@@ -575,6 +609,7 @@ const initialProjectDataPromise = (async () => {
         log.warn(`Expected 1 command line argument but received ${argv._.length}.`);
     }
     const projectPath = argv._[argv._.length - 1];
+    console.log('projectPath', projectPath);
     try {
         const projectData = await promisify(fs.readFile)(projectPath, null);
         return projectData;

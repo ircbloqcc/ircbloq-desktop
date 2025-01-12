@@ -33,6 +33,8 @@ a:active, a:hover {
 
 .aboutDetails {
     font-size: x-small;
+    text-align:left;
+    margin:auto;
 }
 
 .aboutFooter {

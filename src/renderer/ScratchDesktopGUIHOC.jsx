@@ -1,4 +1,4 @@
-import {ipcRenderer} from 'electron';
+import {ipcRenderer, clipboard} from 'electron';
 import {dialog} from '@electron/remote';
 import * as remote from '@electron/remote/renderer';
 import bindAll from 'lodash.bindall';
@@ -25,12 +25,15 @@ import {
     openUpdateModal
 } from 'ircbloq-gui/src/reducers/modals';
 import {setUpdate} from 'ircbloq-gui/src/reducers/update';
+import {setDeviceData} from 'ircbloq-gui/src/reducers/device-data';
 
 import analytics, {initialAnalytics} from 'ircbloq-gui/src/lib/analytics';
 import MessageBoxType from 'ircbloq-gui/src/lib/message-box.js';
+import {makeDeviceLibrary} from 'ircbloq-gui/src//lib/libraries/devices/index.jsx';
 
 import ElectronStorageHelper from '../common/ElectronStorageHelper';
 
+import showPrivacyPolicy from './showPrivacyPolicy';
 
 /**
  * Higher-order component to add desktop logic to the GUI.
@@ -49,7 +52,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
                 'handleUpdateProjectTitle'
             ]);
             this.props.onLoadingStarted();
-            ipcRenderer.invoke('get-initial-project-data').then(initialProjectData => {
+            ipcRenderer.invoke('get-initial-project-data').then(async initialProjectData => {
                 const hasInitialProject = initialProjectData && (initialProjectData.length > 0);
                 this.props.onHasInitialProject(hasInitialProject, this.props.loadingState);
                 if (!hasInitialProject) {
@@ -57,6 +60,13 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
                     ipcRenderer.send('loading-completed');
                     return;
                 }
+                // Update device list
+                await this.props.vm.extensionManager.getDeviceList().then(data => {
+                    this.props.onSetDeviceData(makeDeviceLibrary(data));
+                })
+                    .catch(() => {
+                        this.props.onSetDeviceData(makeDeviceLibrary());
+                    });
                 this.props.vm.loadProject(initialProjectData).then(
                     () => {
                         this.props.onLoadingCompleted();
@@ -86,6 +96,9 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
             ipcRenderer.send('set-locale', this.props.locale);
         }
         componentDidMount () {
+            // replace navigator.clipboard.readText to Electron's clipboard.readText
+            navigator.clipboard.readText = () => Promise.resolve(clipboard.readText());
+
             ipcRenderer.on('setTitleFromSave', this.handleSetTitleFromSave);
             ipcRenderer.on('setUpdate', (event, args) => {
                 this.props.onSetUpdate(args);
@@ -93,7 +106,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
             ipcRenderer.on('setUserId', (event, args) => {
                 initialAnalytics(args);
                 // Register "base" page view
-                analytics.pageview('/', null, 'desktop');
+                analytics.send({hitType: 'pageview', page: '/community/electron'});
             });
             ipcRenderer.on('setPlatform', (event, args) => {
                 this.platform = args;
@@ -104,6 +117,9 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
         }
         handleClickAbout () {
             ipcRenderer.send('open-about-window');
+        }
+        handleClickLicense () {
+            ipcRenderer.send('open-license-window');
         }
         handleClickCheckUpdate () {
             ipcRenderer.send('reqeustCheckUpdate');
@@ -170,7 +186,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
                 canModifyCloudData={false}
                 canSave={false}
                 isScratchDesktop
-                onClickAbout={[ // 新方法？似乎gui里已经有接口了
+                onClickAbout={[
                     {
                         title: (<FormattedMessage
                             defaultMessage="About"
@@ -178,6 +194,22 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
                             id="gui.desktopMenuBar.about"
                         />),
                         onClick: () => this.handleClickAbout()
+                    },
+                    {
+                        title: (<FormattedMessage
+                            defaultMessage="License"
+                            description="Menu bar item for license"
+                            id="gui.desktopMenuBar.license"
+                        />),
+                        onClick: () => this.handleClickLicense()
+                    },
+                    {
+                        title: (<FormattedMessage
+                            defaultMessage="Privacy policy"
+                            description="Menu bar item for privacy policy"
+                            id="gui.menuBar.privacyPolicy"
+                        />),
+                        onClick: () => showPrivacyPolicy()
                     },
                     {
                         title: (<FormattedMessage
@@ -196,6 +228,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
                 onClickClearCache={this.handleClickClearCache}
                 onProjectTelemetryEvent={this.handleProjectTelemetryEvent}
                 onShowMessageBox={this.handleShowMessageBox}
+                onShowPrivacyPolicy={showPrivacyPolicy}
                 onStorageInit={this.handleStorageInit}
                 onUpdateProjectTitle={this.handleUpdateProjectTitle}
 
@@ -215,6 +248,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
         onLoadingStarted: PropTypes.func,
         onRequestNewProject: PropTypes.func,
         onTelemetrySettingsClicked: PropTypes.func,
+        onSetDeviceData: PropTypes.func.isRequired,
         onSetUpdate: PropTypes.func,
         // using PropTypes.instanceOf(VM) here will cause prop type warnings due to VM mismatch
         vm: GUIComponent.WrappedComponent.propTypes.vm
@@ -247,6 +281,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
             return dispatch(onLoadedProject(loadingState, canSaveToServer, loadSuccess));
         },
         onRequestNewProject: () => dispatch(requestNewProject(false)),
+        onSetDeviceData: data => dispatch(setDeviceData(data)),
         onSetUpdate: arg => {
             dispatch(setUpdate(arg));
             dispatch(openUpdateModal());

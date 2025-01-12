@@ -15,11 +15,20 @@ ipcRenderer.on('ready-to-show', () => {
 const route = new URLSearchParams(window.location.search).get('route') || 'app';
 let routeModulePromise;
 switch (route) {
+case 'loading':
+    routeModulePromise = import('./loading.jsx');
+    break;
 case 'app':
     routeModulePromise = import('./app.jsx');
     break;
 case 'about':
     routeModulePromise = import('./about.jsx');
+    break;
+case 'license':
+    routeModulePromise = import('./license.jsx');
+    break;
+case 'privacy':
+    routeModulePromise = import('./privacy.jsx');
     break;
 }
 

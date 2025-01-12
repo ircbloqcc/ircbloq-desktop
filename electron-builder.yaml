@@ -1,18 +1,17 @@
 directories:
   buildResources: buildResources
   output: dist
-extraResources: ["tools", "external-resources", 'firmwares', "statics", "drivers"]
+extraFiles: ['LICENSE', 'LICENSE.ScratchFoundation', 'TRADEMARK', "tools", "external-resources", 'firmwares', "drivers"]
 
 appId: ircbloq.cc.ircbloq-desktop
-productName: "ircBloqV4"
-publish: 
+productName: "IrcBloqDesktop"
+publish:
   - provider: github
-    repo: ircbloq-releases
-    owner: ircbloqcc
+artifactName: "IrcBloqV4-Desktop_v${version}_${os}_${arch}.${ext}"
 
 fileAssociations:
   ext: ib
-  name: Ircbloq project file
+  name: IrcBloq project file
   role: Editor
   icon: buildResources/IrcBloqFile.ico
 
@@ -28,12 +27,11 @@ mac:
   hardenedRuntime: true
   icon: buildResources/IrcBloqDesktop.icns
   provisioningProfile: embedded.provisionprofile
-  artifactName: "ircBloqV4-Desktop_V${version}.${ext}"
   target:
     - dmg
     # - mas
 dmg:
-  title: "ircBloqV4-Desktop_${version}"
+  title: "IrcBloq-Desktop_${version}"
 # mas:
 #   category: public.app-category.education
 #   entitlements: buildResources/entitlements.mas.plist
@@ -50,13 +48,27 @@ win:
     # - appx
     - nsis
 # appx:
-#   identityName: "IrcbloqTeam.IrcbloqDesktop
-#   publisherDisplayName: "iRobochakra"
+#   identityName: "iRobochakraTeam.IrcbloqDesktop
+#   publisherDisplayName: "i-Robochakra Team"
 #   publisher: "CN=2EC43DF1-469A-4119-9AB9-568A0A1FF65F"
-#   artifactName: "IrcBloqV4 ${version}.${ext}"
 nsis:
   oneClick: false # allow user to choose per-user or per-machine
   allowToChangeInstallationDirectory: true
   include: buildResources/installer.nsh
 #   license: LICENSE
-  artifactName: "ircBloqV4-Desktop_V${version}.${ext}"
+
+linux:
+  category: Education
+  icon: buildResources/linux
+  desktop:
+    - Encoding: UTF-8
+    - Name: IrcBloqDesktop
+    - Icon: ircbloq-desktop
+    - Type: Application
+    - Terminal: false
+  target:
+    - deb
+
+deb:
+  depends: ["libnotify4", "libxtst6", "libnss3"]
+
