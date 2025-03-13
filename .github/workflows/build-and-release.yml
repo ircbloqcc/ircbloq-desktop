@@ -71,6 +71,7 @@ jobs:
 
       - name: Npm Install
         run: |
+          npm config set engine-strict false
           git config --global url."https://github.com".insteadOf ssh://git@github.com
           npm ci --legacy-peer-deps
 
@@ -101,6 +102,7 @@ jobs:
 
       - name: Npm Install
         run: |
+          npm config set engine-strict false
           pip install setuptools
           npm ci --legacy-peer-deps
 
@@ -113,6 +115,7 @@ jobs:
           CSC_IDENTITY_AUTO_DISCOVERY: false
           PYTHON_PATH: python
         run: |
+          npm config set engine-strict false
           export PYTHON_PATH=$(pyenv root)/shims/python
           npm run publish
 
@@ -129,6 +132,7 @@ jobs:
 
       - name: Npm Install
         run: |
+          npm config set engine-strict false
           npm ci --legacy-peer-deps
 
       - name: Build and Publish
