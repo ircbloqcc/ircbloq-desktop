@@ -58,7 +58,7 @@ jobs:
 
   build-windows:
     needs: create-release
-    runs-on: windows-2019
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
         with:
@@ -75,8 +75,7 @@ jobs:
       - name: Npm Install
         run: |
           npm config set engine-strict false
-          git config --global url."https://github.com".insteadOf ssh://git@github.com
-          npm ci --legacy-peer-deps
+          npm i --legacy-peer-deps
 
       - name: Build and Publish
         env:
@@ -88,9 +87,11 @@ jobs:
 
   build-mac:
     needs: create-release
-    runs-on: macos-13
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
 
       - name: Use Node.js
         uses: actions/setup-node@v2
@@ -109,7 +110,7 @@ jobs:
       - name: Npm Install
         run: |
           pip install setuptools
-          npm ci --legacy-peer-deps
+          npm i --legacy-peer-deps
 
       - name: Build and Publish
         env:
@@ -128,6 +129,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
 
       - name: Use Node.js
         uses: actions/setup-node@v2
@@ -139,7 +142,7 @@ jobs:
 
       - name: Npm Install
         run: |
-          npm ci --legacy-peer-deps
+          npm i --legacy-peer-deps
 
       - name: Build and Publish
         env:
