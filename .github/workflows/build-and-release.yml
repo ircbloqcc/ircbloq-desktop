@@ -30,6 +30,7 @@ jobs:
           cd ${{github.workspace}}/ircbloq-releases
           git tag ${{ steps.tag.outputs.tag }}
           git push --tags --porcelain
+
       - name: Create Release
         id: create_release
         uses: ncipollo/release-action@v1
@@ -73,7 +74,7 @@ jobs:
         run: |
           npm config set engine-strict false
           git config --global url."https://github.com".insteadOf ssh://git@github.com
-          npm ci --legacy-peer-deps
+          npm install --ignore-engines
 
       - name: Build and Publish
         env:
@@ -104,7 +105,7 @@ jobs:
         run: |
           npm config set engine-strict false
           pip install setuptools
-          npm ci --legacy-peer-deps
+          npm install --ignore-engines
 
       - name: Build and Publish
         env:
@@ -133,7 +134,7 @@ jobs:
       - name: Npm Install
         run: |
           npm config set engine-strict false
-          npm ci --legacy-peer-deps
+          npm install --ignore-engines
 
       - name: Build and Publish
         env:
@@ -142,4 +143,4 @@ jobs:
           NODE_ENV: production
           NODE_OPTIONS: --max_old_space_size=8192
           CSC_IDENTITY_AUTO_DISCOVERY: false
-        run: npm run publis
+        run: npm run publish
