@@ -195,7 +195,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
                         />),
                         onClick: () => this.handleClickAbout()
                     },
-                    {
+                    {/*
                         title: (<FormattedMessage
                             defaultMessage="License"
                             description="Menu bar item for license"
@@ -210,7 +210,7 @@ const ScratchDesktopGUIHOC = function (WrappedComponent) {
                             id="gui.menuBar.privacyPolicy"
                         />),
                         onClick: () => showPrivacyPolicy()
-                    },
+                    */},
                     {
                         title: (<FormattedMessage
                             defaultMessage="Data settings"

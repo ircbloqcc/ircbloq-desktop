@@ -27,7 +27,9 @@ const makeConfig = function (defaultConfig, options) {
         plugins: [
             '@babel/plugin-syntax-dynamic-import',
             '@babel/plugin-transform-async-to-generator',
-            '@babel/plugin-proposal-object-rest-spread'
+            '@babel/plugin-proposal-object-rest-spread',
+            '@babel/plugin-proposal-class-properties', // Add this plugin
+            '@babel/plugin-proposal-private-methods'    // Optional: if using private methods
     ],
         presets: [
             ['@babel/preset-env', {targets: {electron: electronVersion}}]

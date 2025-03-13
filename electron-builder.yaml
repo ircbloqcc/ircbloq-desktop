@@ -4,10 +4,10 @@ directories:
 extraFiles: ['LICENSE', 'LICENSE.ScratchFoundation', 'TRADEMARK', "tools", "external-resources", 'firmwares', "drivers"]
 
 appId: ircbloq.cc.ircbloq-desktop
-productName: "IrcBloqDesktop"
+productName: "IrcBloqV4-AI"
 publish:
   - provider: github
-artifactName: "IrcBloqV4-Desktop_v${version}_${os}_${arch}.${ext}"
+artifactName: "IrcBloqV4-AI_v${version}_${os}_${arch}.${ext}"
 
 fileAssociations:
   ext: ib
@@ -31,7 +31,7 @@ mac:
     - dmg
     # - mas
 dmg:
-  title: "IrcBloq-Desktop_${version}"
+  title: "IrcBloqV4-AI_${version}"
 # mas:
 #   category: public.app-category.education
 #   entitlements: buildResources/entitlements.mas.plist
@@ -62,7 +62,7 @@ linux:
   icon: buildResources/linux
   desktop:
     - Encoding: UTF-8
-    - Name: IrcBloqDesktop
+    - Name: IrcBloqV4-AI
     - Icon: ircbloq-desktop
     - Type: Application
     - Terminal: false
@@ -71,4 +71,3 @@ linux:
 
 deb:
   depends: ["libnotify4", "libxtst6", "libnss3"]
-
