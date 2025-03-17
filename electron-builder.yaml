@@ -54,6 +54,7 @@ win:
 nsis:
   oneClick: false # allow user to choose per-user or per-machine
   allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: true
   include: buildResources/installer.nsh
 #   license: LICENSE
 
