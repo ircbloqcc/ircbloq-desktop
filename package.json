@@ -26,6 +26,7 @@
     "doBuild": "node ./scripts/electron-builder-wrapper.js",
     "dist": "npm run clean && npm run compile && npm run fetch:all && npm run doBuild -- --mode=dist",
     "publish": "npm run clean && npm run compile && npm run fetch:all  && npm run doBuild -- --mode=publish",
+    "publish:ia32": "npm run clean && npm run compile && npm run fetch:all  && npm run doBuild -- --arch=ia32 --mode=publish",
     "test": "npm run test:lint",
     "test:lint": "eslint --cache --color --ext .jsx,.js src scripts"
   },

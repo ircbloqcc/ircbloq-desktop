@@ -68,7 +68,12 @@ const runBuilder = function (wrapperConfig, target) {
         }
     }
     if (target.platform === 'win32' && wrapperConfig.mode !== 'dev') {
-        allArgs.push('--ia32', '--x64');
+        if (wrapperConfig.arch) {
+            allArgs.push(`--${wrapperConfig.arch}`);
+        } else {
+            // Default to x64 if no arch specified
+            allArgs.push('--x64');
+        }
     }
     if (!wrapperConfig.doPackage) {
         allArgs.push('--dir', '--c.compression=store');
