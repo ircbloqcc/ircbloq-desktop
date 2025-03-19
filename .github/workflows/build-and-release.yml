@@ -74,6 +74,10 @@ jobs:
 
       - name: Npm Install
         run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
           npm config set engine-strict false
           npm i --legacy-peer-deps
 
@@ -109,6 +113,10 @@ jobs:
 
       - name: Npm Install
         run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
           pip install setuptools
           npm i --legacy-peer-deps
 
@@ -147,6 +155,10 @@ jobs:
 
       - name: Npm Install
         run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
           npm i --legacy-peer-deps
 
       # Fixed EACCES Error in Linux
