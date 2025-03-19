@@ -56,9 +56,9 @@ jobs:
           prerelease: false
           token:  ${{ secrets.REPO_AUTH_TOKEN }}
 
-  build-windows-x64:
+  build-windows:
     needs: create-release
-    runs-on: windows-latest
+    runs-on: windows-2019
     steps:
       - uses: actions/checkout@v2
         with:
@@ -82,41 +82,12 @@ jobs:
           GA_ID: ${{ secrets.GA_ID }}
           GH_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
           NODE_ENV: production
-          NODE_OPTIONS: --max_old_space_size=4096
+          NODE_OPTIONS: --max_old_space_size=8192
         run: npm run publish
-        
-  build-windows-ia32:
-    needs: create-release
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          persist-credentials: false
-
-      - name: Use Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18.x'
-      
-      - name: github Token
-        run: git config --global url."https://${{ secrets.REPO_AUTH_TOKEN }}@github.com/".insteadOf ssh://git@github.com/
-
-      - name: Npm Install
-        run: |
-          npm config set engine-strict false
-          npm i --legacy-peer-deps
-
-      - name: Build and Publish
-        env:
-          GA_ID: ${{ secrets.GA_ID }}
-          GH_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
-          NODE_ENV: production
-          NODE_OPTIONS: --max_old_space_size=4096
-        run: npm run publish:ia32
 
   build-mac:
     needs: create-release
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v2
         with:
