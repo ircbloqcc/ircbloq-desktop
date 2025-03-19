@@ -124,6 +124,7 @@ jobs:
       - name: Grant Permission to 7zip Binary
         run: |
           chmod +x node_modules/ircbloq-link/node_modules/7zip-bin/mac/arm64/7za
+          chmod +x ./node_modules/ircbloq-link/node_modules/7zip-bin/mac/x64/7za
 
       - name: Build and Publish
         env:
