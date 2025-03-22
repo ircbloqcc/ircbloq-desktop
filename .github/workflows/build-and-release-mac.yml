@@ -1,0 +1,106 @@
+name: Build and release
+
+on:
+  push:
+    tags:
+      - 'V*'
+    paths-ignore:
+      - 'README.md'
+      - 'CHANGE.md'
+      - 'doc/*'
+      - '.github/*'
+
+jobs:
+  create-release:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout public repository
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.REPO_AUTH_TOKEN }}
+          repository: ircbloqcc/ircbloq-releases
+          path: ircbloq-releases
+
+      - name: Get tag
+        id: tag
+        uses: dawidd6/action-get-tag@v1
+
+      - name: Create tag in public repository
+        run: |
+          cd ${{github.workspace}}/ircbloq-releases
+          git tag ${{ steps.tag.outputs.tag }}
+          git push --tags --porcelain
+      - name: Create Release
+        id: create_release
+        uses: ncipollo/release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
+        with:
+          owner: ircbloqcc
+          repo: ircbloq-releases
+          tag: ${{ steps.tag.outputs.tag }}
+          name: Release ${{ steps.tag.outputs.tag }}
+          body: |
+            ## Change Log (en)
+
+            - **New feature**
+
+                1. Feature 1.
+                2. Feature 2.
+
+            - **Fix bug**
+
+                1. Bug 1.
+                2. Bug 2.
+          draft: true
+          prerelease: false
+          token:  ${{ secrets.REPO_AUTH_TOKEN }}
+
+  build-mac:
+    needs: create-release
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+
+      - name: Install python2.7
+        run: |
+          brew install pyenv
+          pyenv install 2.7.18
+          pyenv global 2.7.18
+          
+      - name: github Token
+        run: git config --global url."https://${{ secrets.REPO_AUTH_TOKEN }}@github.com/".insteadOf ssh://git@github.com/
+
+      - name: Npm Install
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          pip install setuptools
+          npm i --legacy-peer-deps
+
+      # Fixed EACCES Error in MacOS
+      - name: Grant Permission to 7zip Binary
+        run: |
+          chmod +x node_modules/ircbloq-link/node_modules/7zip-bin/mac/arm64/7za
+          chmod +x ./node_modules/ircbloq-link/node_modules/7zip-bin/mac/x64/7za
+
+      - name: Build and Publish
+        env:
+          GA_ID: ${{ secrets.GA_ID }}
+          GH_TOKEN: ${{ secrets.REPO_AUTH_TOKEN }}
+          NODE_ENV: production
+          NODE_OPTIONS: --max_old_space_size=8192
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+          PYTHON_PATH: python
+        run: |
+          export PYTHON_PATH=$(pyenv root)/shims/python
+          npm run publish
